@@ -20,5 +20,5 @@ post '/cambiar_email' do
   result.do
   client.close
 
-  { message: "Correo actualizado correctamente" }.to_json
+  { message: "Correo actualizado correctamentee" }.to_json
 end
