@@ -1,24 +1,29 @@
 require 'sinatra'
 require 'json'
-require 'tiny_tds'
+require 'sinatra/cross_origin'
 
-post '/cambiar_email' do
-  content_type :json
-  data = JSON.parse(request.body.read)
-  old_email = data['old_email']
-  new_email = data['new_email']
+require_relative './db'
+require_relative './cambiar_email'
+require_relative './cambiar_password'
 
-  client = TinyTds::Client.new(
-    username: 'admin',
-    password: 'Distribuida123',
-    host: 'auth-db.cny206g4cz8c.us-east-1.rds.amazonaws.com',
-    port: 1433,
-    database: 'auth_db'
-  )
+# Configura CORS
+configure do
+  enable :cross_origin
+end
 
-  result = client.execute("UPDATE users SET email = '#{new_email}' WHERE email = '#{old_email}'")
-  result.do
-  client.close
+before do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+end
 
-  { message: "Correo actualizado correctamente" }.to_json
+# Respuesta a preflight OPTIONS
+options '*' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+  response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+  200
+end
+
+# Ruta raíz de prueba
+get '/' do
+  'Servicio Ruby funcionando correctamente'
 end
