@@ -20,7 +20,7 @@ jobs:
 
     - name: Deploy container on EC2
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2.pem ubuntu@34.228.43.149 << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2.pem ec2-user@34.228.43.149 << 'EOF'
           docker pull kamartinez/ruby-email-service
           docker stop ruby-email-service || true
           docker rm ruby-email-service || true
