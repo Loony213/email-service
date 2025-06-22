@@ -1,0 +1,28 @@
+name: Deploy Ruby Email Service to EC2
+
+on:
+  push:
+    branches: [ test ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Copy PEM key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_PEM_KEY }}" > ~/.ssh/ec2.pem
+        chmod 600 ~/.ssh/ec2.pem
+
+    - name: Deploy container on EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2.pem ubuntu@34.228.43.149 << 'EOF'
+          docker pull kamartinez/ruby-email-service
+          docker stop ruby-email-service || true
+          docker rm ruby-email-service || true
+          docker run -d --name ruby-email-service -p 8081:4567 kamartinez/ruby-email-service
+        EOF
