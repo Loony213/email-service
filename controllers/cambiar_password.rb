@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'json'
-require_relative './db'
+require_relative '../db/db'  # Ruta actualizada a la nueva ubicación de db.rb
 
 put '/cambiar-password' do
   content_type :json
@@ -13,19 +13,19 @@ put '/cambiar-password' do
 
     if email.nil? || old_password.nil? || new_password.nil?
       status 400
-      return { error: 'Faltan datos' }.to_json
+      return { error: 'Missing data' }.to_json
     end
 
     result = DB_CLIENT.execute("SELECT * FROM users WHERE email = '#{email}' AND password = '#{old_password}'")
     if result.each.empty?
       status 401
-      return { error: 'Credenciales inválidas' }.to_json
+      return { error: 'Invalid credentials' }.to_json
     end
 
     DB_CLIENT.execute("UPDATE users SET password = '#{new_password}' WHERE email = '#{email}'").do
 
     status 200
-    { message: 'Contraseña actualizada correctamente' }.to_json
+    { message: 'Password updated successfully' }.to_json
 
   rescue => e
     status 500

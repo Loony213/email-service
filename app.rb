@@ -2,9 +2,9 @@ require 'sinatra'
 require 'json'
 require 'sinatra/cross_origin'
 
-require_relative './db'
-require_relative './cambiar_email'
-require_relative './cambiar_password'
+require_relative './db/db'                     # db.rb ahora está en /db
+require_relative './controllers/cambiar_email' # cambiar_email.rb ahora está en /controllers
+require_relative './controllers/cambiar_password' # cambiar_password.rb ahora está en /controllers
 
 # Configura CORS
 configure do
@@ -25,5 +25,5 @@ end
 
 # Ruta raíz de prueba
 get '/' do
-  'Servicio Ruby funcionando correctamente'
+  'Ruby service running successfully'
 end
