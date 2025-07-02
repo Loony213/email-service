@@ -23,12 +23,14 @@ jobs:
       run: |
         docker build -t kamartinez/change_password ./change_password
         docker build -t kamartinez/change_user ./change_user
+        docker build -t kamartinez/delete-account ./delete_account
 
     - name: Push images to Docker Hub
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push kamartinez/change_password
         docker push kamartinez/change_user
+        docker push kamartinez/delete-account
 
     - name: Deploy services to EC2
       uses: appleboy/ssh-action@v1.0.0
@@ -42,11 +44,15 @@ jobs:
           docker rm change_password || true
           docker stop change_user || true
           docker rm change_user || true
+          docker stop delete-account || true
+          docker rm delete-account || true
 
           # Descargar las últimas imágenes de Docker
           docker pull kamartinez/change_password
           docker pull kamartinez/change_user
+          docker pull kamartinez/delete-account
 
           # Ejecutar los nuevos contenedores con las imágenes más recientes
           docker run -d --name change_password -p 4567:4567 kamartinez/change_password
           docker run -d --name change_user -p 4568:4568 kamartinez/change_user
+          docker run -d --name change_user -p 4569:4569 kamartinez/delete-account
