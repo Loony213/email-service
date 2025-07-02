@@ -3,17 +3,22 @@ require './models/user'
 
 put '/update-description' do
   content_type :json
-  email = params['email']
-  description = params['description']
+  request_payload = JSON.parse(request.body.read)
+  email = request_payload['email']
+  description = request_payload['description']
 
-  if email.nil? || description.nil?
+  puts "Received email: #{email}, description: #{description}"  # Para depuración
+
+  if email.nil? || description.nil? || email.empty? || description.empty?
     status 400
-    return { error: "Email or description parameter is missing" }.to_json
+    return { error: "Email or description is missing" }.to_json
   end
 
-  if User.update_description(email, description)
+  result = DB_CLIENT.execute("UPDATE users SET description = '#{description}' WHERE email = '#{email}'")
+
+  if result
     status 200
-    { message: "Description updated successfully" }.to_json
+    { message: "Description updated successfully." }.to_json
   else
     status 404
     { error: "User not found" }.to_json
