@@ -1,28 +1,52 @@
-name: Deploy Ruby Email Service to EC2
+name: Deploy Email Service to EC2
 
 on:
   push:
-    branches: [ test ]
+    branches:
+      - test  
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+    
+    - name: Set up SSH key for EC2
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.EC2_PEM_KEY }}
 
-    - name: Copy PEM key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_PEM_KEY }}" > ~/.ssh/ec2.pem
-        chmod 600 ~/.ssh/ec2.pem
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-    - name: Deploy container on EC2
+    - name: Build Docker images services
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2.pem ec2-user@54.145.79.10 << 'EOF'
-          docker pull kamartinez/ruby-email-service
-          docker stop ruby-email-service || true
-          docker rm ruby-email-service || true
-          docker run -d --name ruby-email-service -p 8081:4567 kamartinez/ruby-email-service
-        EOF
+        docker build -t kamartinez/change_password ./change_password
+        docker build -t kamartinez/change_user ./change_user
+
+    - name: Push images to Docker Hub
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push kamartinez/change_password
+        docker push kamartinez/change_user
+
+    - name: Deploy services to EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: 54.145.79.10 
+        username: ec2-user
+        key: ${{ secrets.EC2_PEM_KEY }}
+        script: |
+          # Detener y eliminar contenedores anteriores si existen
+          docker stop change_password || true
+          docker rm change_password || true
+          docker stop change_user || true
+          docker rm change_user || true
+
+          # Descargar las últimas imágenes de Docker
+          docker pull kamartinez/change_password
+          docker pull kamartinez/change_user
+
+          # Ejecutar los nuevos contenedores con las imágenes más recientes
+          docker run -d --name change_password -p 4567:4567 kamartinez/change_password
+          docker run -d --name change_user -p 4568:4568 kamartinez/change_user
