@@ -2,8 +2,7 @@ require 'sinatra'
 require 'json'
 require 'sinatra/cross_origin'
 
-require_relative './controllers/cambiar_email'
-require_relative './controllers/cambiar_password'
+require_relative './controllers/change_email'
 
 configure do
   enable :cross_origin
