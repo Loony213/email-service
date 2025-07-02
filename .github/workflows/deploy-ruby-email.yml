@@ -55,4 +55,4 @@ jobs:
           # Ejecutar los nuevos contenedores con las imágenes más recientes
           docker run -d --name change_password -p 4567:4567 kamartinez/change_password
           docker run -d --name change_user -p 4568:4568 kamartinez/change_user
-          docker run -d --name change_user -p 4569:4569 kamartinez/delete-account
+          docker run -d --name delete-account -p 4569:4569 kamartinez/delete-account
