@@ -63,8 +63,8 @@ jobs:
           docker pull kamartinez/get_description
 
           # Ejecutar los nuevos contenedores con las imágenes más recientes
-          docker run -d --name change_password -p 4567:4567 kamartinez/change_password
-          docker run -d --name change_user -p 4568:4568 kamartinez/change_user
-          docker run -d --name delete-account -p 4569:4569 kamartinez/delete-account
-          docker run -d --name description -p 4566:4566 kamartinez/description
-          docker run -d --name get_description -p 4565:4565 kamartinez/get_description
+          docker run -d --name change_password -p 4567:4567 --restart unless-stopped kamartinez/change_password
+          docker run -d --name change_user -p 4568:4568 --restart unless-stopped kamartinez/change_user
+          docker run -d --name delete-account -p 4569:4569 --restart unless-stopped kamartinez/delete-account
+          docker run -d --name description -p 4566:4566 --restart unless-stopped kamartinez/description
+          docker run -d --name get_description -p 4565:4565 --restart unless-stopped kamartinez/get_description
