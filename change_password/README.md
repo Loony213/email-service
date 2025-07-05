@@ -1,152 +1,97 @@
 
-# 📂 Change Password Service
+# Change Password Microservice 🔑
 
-This folder contains the logic for the **Change Password** functionality of the Email Service microservice. The service is built using **Ruby 3.2** with the **Sinatra** framework, and it provides an API endpoint to update a user's password.
+This microservice is part of the **Email Service** domain and is responsible for handling user password change requests. It provides functionality for securely changing the password of a user's email account.
 
----
+## Repository Link 📁
+- [GitHub Repository](https://github.com/Loony213/email-service)
 
-## 📌 Features
+## Docker Image 🐳
+- **Docker Image:** `kamartinez/change_password`
 
-- 🔐 **Change Password**: Allows users to update their password securely.
-- 📡 **API Endpoint**: Exposes a RESTful endpoint to change the user's password.
-- 🔑 **Database Interaction**: Interacts with a SQL Server database to store and retrieve user information.
-- 🛠️ **Controller and Model Design**: The logic is divided into a controller (`change_password.rb`) and a model (`user.rb`) for easy maintenance and separation of concerns.
-- 📦 **Dockerized**: The service is containerized using Docker for easy deployment and scalability.
-- 🛡️ **Security**: Ensures that only authenticated users can change their passwords.
+## Purpose 🎯
+The **Change Password** microservice enables users to securely change their email account password. This service ensures that the password change process is handled efficiently and securely.
 
----
+## Architecture Style 🏗️
+- **Microservice Architecture:** This service is designed as a standalone microservice that focuses specifically on password management.
+- **Design Pattern:** The service follows the **MVC (Model-View-Controller)** design pattern, where the model handles the data structure (user), the controller manages the flow of data, and the service contains the business logic for password changing.
 
-## 🧩 Architecture
+## Technologies 💻
+- **Programming Language:** Ruby
+- **Containerization:** Docker (optional)
+- **API Integration:** REST APIs for password change functionality
 
-The **Change Password** service follows a modular and scalable architecture using **Sinatra** for routing and handling HTTP requests. It interacts with a SQL Server database to manage user data and securely update passwords. Here's an overview of the architecture:
-
-1. **Controller Layer**:
-   - **`controllers/change_password.rb`**: This is where the main business logic for changing the password resides. It handles incoming requests, verifies user input, and communicates with the model to update the password.
-
-2. **Model Layer**:
-   - **`models/user.rb`**: The user model interacts with the database to fetch user data and update the password securely.
-
-3. **Database Layer**:
-   - **`db/db.rb`**: This file contains the logic for connecting to the SQL Server database. It uses the **TinyTDS** gem to interact with the database.
-
-4. **Application Layer**:
-   - **`services/app.rb`**: This file initializes the Sinatra application, sets up routes, and serves the application. It is the entry point for the service.
-
-5. **Configuration**:
-   - **`config.ru`**: The Rack configuration file that loads and runs the Sinatra application.
-
-6. **Deployment**:
-   - The service is containerized using Docker, allowing it to be easily deployed and scaled.
-
----
-
-## 📁 Folder Structure
+## Project Structure 🧑‍💻
+The repository is structured as follows:
 
 ```
 change_password/
-├── config.ru             # Rack configuration file
-├── controllers/
-│   └── change_password.rb # Controller logic for changing password
-├── db/
-│   └── db.rb             # Database connection logic (using TinyTDS)
-├── models/
-│   └── user.rb           # User model handling user data and password update
-└── services/
-    └── app.rb            # Main application file that configures the service
+├── config/                   # Configuration files for the application.
+│   └── config.ru             # Main configuration file for the application setup.
+│
+├── controllers/              # Manages incoming requests and responses.
+│   └── change_password.rb    # Controller to manage password change requests.
+│
+├── db/                       # Database-related logic.
+│   └── db.rb                 # Contains database connection details and schema setup.
+│
+├── models/                   # Contains models used in the application.
+│   └── user.rb               # Defines the user model, including attributes and validations.
+│
+├── services/                 # Core business logic for the service.
+│   └── user_service.rb       # Contains the logic for processing user password changes.
+│
+├── app.rb                    # Main entry point for the application.
+├── Dockerfile                # Docker configuration for building the service container.
+├── Gemfile                   # Lists the dependencies for the Ruby application.
+└── README.md                 # This file.
 ```
 
-### 📝 Description of Each File
+### Folder Descriptions 📂
+- **config/**: Contains configuration files that set up the environment and service configurations.
+- **controllers/**: Manages incoming HTTP requests and handles the flow of data to and from the services.
+- **db/**: Manages database connections and setup, ensuring that data is stored securely.
+- **models/**: Contains the user model which defines the structure of user data, including password and validation rules.
+- **services/**: Contains the business logic for the microservice, including the user service that processes password changes.
+- **app.rb**: The main entry point to start the application and handle routing.
+- **Dockerfile**: A file used to build the Docker image for the microservice, allowing for easy deployment.
+- **Gemfile**: Specifies the Ruby gems required for the application to run, such as web frameworks and database clients.
 
-- **`config.ru`**: This file contains the Rack configuration for setting up the Sinatra application.
-- **`controllers/change_password.rb`**: This is the controller responsible for the business logic of the password change functionality. It listens for requests, processes them, and calls the appropriate services or models.
-- **`db/db.rb`**: This file manages the connection to the SQL Server database using the `TinyTDS` library.
-- **`models/user.rb`**: This model represents the user in the system. It handles the logic of fetching user data from the database and updating the password.
-- **`services/app.rb`**: This is the main application file where the service is initialized, routes are configured, and the server is started.
-
-## ⚙️ How It Works
-
-1. **Database Connection**: 
-   - The `db.rb` file manages the connection to the SQL Server database using the `TinyTDS` library.
-   - This connection is used by the models to interact with the database.
-
-2. **Password Change Logic**: 
-   - When a `PUT` request is sent to the `/change-password` endpoint, the `change_password.rb` controller processes the request. 
-   - It retrieves the user details from the `user.rb` model, validates the password, and updates it in the database.
-
-3. **User Model**:
-   - The `user.rb` model is used to fetch the user by ID, validate the current password, and update the password to a new value.
-
-4. **Application Configuration**: 
-   - The `app.rb` file sets up the Sinatra application, configures routes, and starts the service.
-
-## 🚀 How to Deploy
-
-### Prerequisites
-
-- **Docker**: Ensure Docker is installed on your machine.
-- **Ruby 3.2**: Ensure you have Ruby 3.2 installed (or Docker will handle it inside the container).
-- **Database**: Make sure you have access to a SQL Server that supports `TinyTDS`.
-
-### Steps to Deploy
-
-1. **Clone the repository**:
-```bash
-git clone https://github.com/Loony213/email-service.git
-cd email-service/change_password
-```
-
-2. **Install dependencies** (inside the project folder):
-```bash
-bundle install
-```
-
-3. **Build the Docker image**:
-```bash
-docker build -t kamartinez/change-password .
-```
-
-4. **Run the container**:
-```bash
-docker run -d -p 4567:4567 kamartinez/change-password
-```
-
-   The service will be accessible at:  
-   📍 `http://localhost:4567`
-
-5. **Test the service**:
-   - Use a tool like **Postman** or **curl** to send a `PUT` request to:
+## How to Deploy ⚙️
+1. **Clone the Repository:**
    ```bash
-   PUT http://localhost:4567/cambiar-password
+   git clone https://github.com/Loony213/email-service.git
    ```
-   - Include the user ID and the new password in the request body.
 
-### Example Request:
-```json
-{
-  "user_id": 1,
-  "current_password": "oldpassword123",
-  "new_password": "newpassword123"
-}
-```
+2. **Install Dependencies:**
+   Navigate to the project directory and install the necessary Ruby gems:
+   ```bash
+   bundle install
+   ```
 
-### Example Response:
-```json
-{
-  "status": "success",
-  "message": "Password updated successfully"
-}
-```
-## 🛠️ Requirements
+3. **Run the Service:**
+   - Once dependencies are installed, start the service:
+     ```bash
+     ruby app.rb
+     ```
 
-- Docker
-- Internet access to install dependencies
-- Ruby 3.2 and Bundler (inside container)
-- Connection to a SQL Server (TinyTDS-compatible)
+4. **Docker Deployment:**
+   - Build the Docker image:
+     ```bash
+     docker build -t kamartinez/change_password .
+     ```
+   - Run the container:
+     ```bash
+     docker run -p 5000:5000 kamartinez/change_password
+     ```
 
----
+5. **Access the Service:**
+   - The Change Password service will be available on `http://localhost:5000` once the container is running.
 
-## 👤 Author
+## Features ✨
+- **Password Change**: Facilitates the secure change of user passwords.
+- **Secure Authentication**: Ensures that password changes are performed securely.
+- **Modular Design**: Easy to scale and integrate into other services or applications.
 
-Developed by **Loony213**  
-Image on Docker Hub: `kamartinez/change-password`  
-Part of the **Distribuida** system
+## License 📜
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

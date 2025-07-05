@@ -1,148 +1,98 @@
 
-# 📂 Description Service
+# Change Description Microservice ✍️
 
-This folder contains the logic for the **Description** functionality of the Email Service microservice. The service is built using **Ruby 3.2** with the **Sinatra** framework, and it provides an API endpoint to fetch a description of the service.
+This microservice is part of the **Email Service** domain and is responsible for handling user description update requests. It provides functionality for securely updating the user's description in the system.
 
----
+## Repository Link 📁
+- [GitHub Repository](https://github.com/Loony213/email-service)
 
-## 📌 Features
+## Docker Image 🐳
+- **Docker Image:** `kamartinez/description`
 
-- 📝 **Get Description**: Allows users to retrieve the description of the service.
-- 📡 **API Endpoint**: Exposes a RESTful endpoint to fetch the service description.
-- 🔑 **Database Interaction**: Interacts with a SQL Server database to store and retrieve service-related information.
-- 🛠️ **Controller and Model Design**: The logic is divided into a controller (`description.rb`) and a model (`service.rb`) for easy maintenance and separation of concerns.
-- 📦 **Dockerized**: The service is containerized using Docker for easy deployment and scalability.
-- 🛡️ **Security**: Ensures that the description is accessible only to authenticated users.
+## Purpose 🎯
+The **Change Description** microservice allows users to update their description. It ensures that the description change is processed securely and that the updated description is stored properly in the database.
 
----
+## Architecture Style 🏗️
+- **Microservice Architecture:** This service is designed as a standalone microservice, focusing specifically on updating the user's description.
+- **Design Pattern:** The system follows the **MVC (Model-View-Controller)** design pattern, where the model handles data management (user description), the controller manages incoming requests (description change), and the service contains the business logic for updating the description.
 
-## 🧩 Architecture
+## Technologies 💻
+- **Programming Language:** Ruby
+- **Containerization:** Docker (optional)
+- **Database Interaction:** SQL Server (via TinyTds)
+- **API Integration:** REST APIs for updating the user's description
 
-The **Description** service follows a modular and scalable architecture using **Sinatra** for routing and handling HTTP requests. It interacts with a SQL Server database to manage the description data. Here's an overview of the architecture:
-
-1. **Controller Layer**:
-   - **`controllers/description.rb`**: This is where the main business logic for fetching the description resides. It handles incoming requests and communicates with the model to retrieve the description.
-
-2. **Model Layer**:
-   - **`models/service.rb`**: The service model interacts with the database to fetch the service description.
-
-3. **Database Layer**:
-   - **`db/db.rb`**: This file contains the logic for connecting to the SQL Server database. It uses the **TinyTDS** gem to interact with the database.
-
-4. **Application Layer**:
-   - **`services/app.rb`**: This file initializes the Sinatra application, sets up routes, and serves the application. It is the entry point for the service.
-
-5. **Configuration**:
-   - **`config.ru`**: The Rack configuration file that loads and runs the Sinatra application.
-
-6. **Deployment**:
-   - The service is containerized using Docker, allowing it to be easily deployed and scaled.
-
----
-
-## 📁 Folder Structure
+## Project Structure 🧑‍💻
+The repository is structured as follows:
 
 ```
 description/
-├── config.ru             # Rack configuration file
-├── controllers/
-│   └── description.rb    # Controller logic for fetching service description
-├── db/
-│   └── db.rb             # Database connection logic (using TinyTDS)
-├── models/
-│   └── service.rb        # Service model handling description data retrieval
-└── services/
-    └── app.rb            # Main application file that configures the service
+├── config/                   # Configuration files for setting up the environment.
+│   └── config.ru             # Main configuration file for application setup.
+│
+├── controllers/              # Handles incoming requests and responses.
+│   └── description.rb        # Controller to handle description change requests.
+│
+├── db/                       # Database-related logic for storing and retrieving user data.
+│   └── db.rb                 # Contains the database connection and operations.
+│
+├── models/                   # Defines models for user data and database interactions.
+│   └── user.rb               # User model that manages user data.
+│
+├── services/                 # Core logic and business logic for handling user operations.
+│   └── user_service.rb       # Contains the service for updating the user's description.
+│
+├── app.rb                    # Main entry point to run the application.
+├── Dockerfile                # Docker configuration for the containerized service.
+├── Gemfile                   # Defines the dependencies for the Ruby application.
+└── README.md                 # This file.
 ```
 
-### 📝 Description of Each File
+### Folder Descriptions 📂
+- **config/**: Contains configuration settings and environment setup for the service.
+- **controllers/**: Responsible for processing HTTP requests related to description change.
+- **db/**: Contains logic for interacting with the database, including user data storage and retrieval.
+- **models/**: Defines the structure of user data and the necessary operations to interact with it.
+- **services/**: Contains the core business logic for processing user description updates.
+- **app.rb**: The main entry point to start the application and manage routes.
+- **Dockerfile**: Provides a configuration to build and run the microservice in a Docker container.
+- **Gemfile**: Specifies the Ruby dependencies necessary for the application.
 
-- **`config.ru`**: This file contains the Rack configuration for setting up the Sinatra application.
-- **`controllers/description.rb`**: This is the controller responsible for the business logic of fetching the service description. It listens for requests and processes them.
-- **`db/db.rb`**: This file manages the connection to the SQL Server database using the `TinyTDS` library.
-- **`models/service.rb`**: This model represents the service in the system. It handles the logic of fetching the service description from the database.
-- **`services/app.rb`**: This is the main application file where the service is initialized, routes are configured, and the server is started.
-
-## ⚙️ How It Works
-
-1. **Database Connection**: 
-   - The `db.rb` file manages the connection to the SQL Server database using the `TinyTDS` library.
-   - This connection is used by the models to interact with the database.
-
-2. **Get Description Logic**: 
-   - When a `GET` request is sent to the endpoint, the `description.rb` controller processes the request. 
-   - It retrieves the description from the `service.rb` model.
-
-3. **Service Model**:
-   - The `service.rb` model is used to fetch the service description from the database.
-
-4. **Application Configuration**: 
-   - The `app.rb` file sets up the Sinatra application, configures routes, and starts the service.
-
-## 🚀 How to Deploy
-
-### Prerequisites
-
-- **Docker**: Ensure Docker is installed on your machine.
-- **Ruby 3.2**: Ensure you have Ruby 3.2 installed (or Docker will handle it inside the container).
-- **Database**: Make sure you have access to a SQL Server that supports `TinyTDS`.
-
-### Steps to Deploy
-
-1. **Clone the repository**:
-```bash
-git clone https://github.com/Loony213/email-service.git
-cd email-service/description
-```
-
-2. **Install dependencies** (inside the project folder):
-```bash
-bundle install
-```
-
-3. **Build the Docker image**:
-```bash
-docker build -t kamartinez/description .
-```
-
-4. **Run the container**:
-```bash
-docker run -d -p 4567:4567 kamartinez/description
-```
-
-   The service will be accessible at:  
-   📍 `http://localhost:4567`
-
-5. **Test the service**:
-   - Use a tool like **Postman** or **curl** to send a `GET` request to:
+## How to Deploy ⚙️
+1. **Clone the Repository:**
    ```bash
-   GET http://localhost:4567/description
+   git clone https://github.com/Loony213/email-service.git
    ```
 
-### Example Response:
-```json
-{
-  "status": "success",
-  "description": "This is the description of the Email Service"
-}
-```
+2. **Install Dependencies:**
+   Navigate to the project directory and install the necessary Ruby gems:
+   ```bash
+   bundle install
+   ```
 
-## 🔗 Endpoints
+3. **Run the Service:**
+   - After installing the dependencies, you can start the application:
+     ```bash
+     ruby app.rb
+     ```
 
-- **`GET /get-description`**: Fetch service description.
-- **`GET /`**: Root test route: `"Ruby service running successfully"`
+4. **Docker Deployment:**
+   - Build the Docker image:
+     ```bash
+     docker build -t kamartinez/description .
+     ```
+   - Run the container:
+     ```bash
+     docker run -p 5000:5000 kamartinez/description
+     ```
 
-## 🛠️ Requirements
+5. **Access the Service:**
+   - The service will be accessible on `http://localhost:5000` once the container is running.
 
-- Docker
-- Internet access to install dependencies
-- Ruby 3.2 and Bundler (inside container)
-- Connection to a SQL Server (TinyTDS-compatible)
+## Features ✨
+- **Description Update**: Allows users to securely update their description.
+- **Modular Architecture**: The microservice is modular and easily extendable to include more user-related functionality.
+- **Database Integration**: Interacts with the database to persist user description changes.
 
----
-
-## 👤 Author
-
-Developed by **Loony213**  
-Image on Docker Hub: `kamartinez/description`  
-Part of the **Distribuida** system
+## License 📜
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,72 +1,88 @@
 
-# 📧 Email Service
+# Email Service Microservices 📧
 
-This Domain is part of the **Distribuida** system and handles user-related operations such as **email change** and **password updates**. It is built with Sinatra and communicates with a SQL Server database using TinyTDS.
+This repository is part of the **Email Service** domain, which contains microservices for managing user configurations related to their email accounts. These microservices allow users to update their email account settings, including changing their password, username, deleting their account, and updating or retrieving their description.
 
----
+## Repository Link 📁
+- [GitHub Repository](https://github.com/Loony213/email-service)
 
-## 📌 Features
+## Purpose 🎯
+The **Email Service** repository provides several microservices to manage and configure user email settings. Users can update their password, change their username, delete their account, modify their description, or retrieve their description using the respective services provided in this repository.
 
-- ✉️ Change user email
-- 🔐 Update user password
-- ✅ Basic Sinatra + REST structure
-- 🧩 Connects to AWS-hosted SQL Server (RDS)
+## Architecture Style 🏗️
+- **Microservice Architecture:** This service follows a microservices approach where each functionality is provided by an independent service, ensuring scalability and easier maintenance.
+- **Design Pattern:** The system follows the **API-Driven Design** pattern where each microservice exposes an API for specific tasks such as changing password, updating the username, or deleting accounts.
 
----
+## Technologies 💻
+- **Programming Language:** Python or Go (depending on the implementation of individual services)
+- **Containerization:** Docker (optional)
+- **API Integration:** REST APIs for interacting with each service
 
-## 🧩 Architecture
-
-- 🧱 Style: Independent microservice
-- 🌐 API: REST (Sinatra)
-- 💎 Language: Ruby 3.2
-- 🐳 Containerized with Docker
-
----
-
-## 📁 Project Structure
+## Project Structure 🧑‍💻
+The repository is structured as follows:
 
 ```
 email-service/
-├── .github/                 # GitHub workflows
-│   └── workflows/           # Folder for CI/CD workflows
-│       └── deploy-ruby-email.yml   # CI/CD pipeline file
-├── change_password/         # Logic for changing user password
-│   └── change_password.rb   # Ruby file for password change logic
-├── change_user/             # Logic for changing user email
-│   └── change_user.rb       # Ruby file for email change logic
-├── delete_account/          # Logic for deleting user account
-│   └── delete_account.rb    # Ruby file for account deletion logic
-├── description/             # Service description
-│   └── description.rb       # File providing description of the service
-├── get_description/         # Logic to get the service description
-│   └── get_description.rb   # Ruby file for fetching service description
-└── README.md                # Project documentation
+├── .github/workflows/         # Contains the GitHub Actions workflows for CI/CD automation.
+│   └── new.yml                # Workflow configuration for the repository.
+│
+├── change_password/           # Service for changing the user's password.
+│   └── README.md              # Documentation for the change password service.
+│
+├── change_user/               # Service for changing the user's username.
+│   └── README.md              # Documentation for the change username service.
+│
+├── delete_account/            # Service for deleting a user's account.
+│   └── README.md              # Documentation for the delete account service.
+│
+├── description/               # Service for updating and retrieving user description.
+│   └── README.md              # Documentation for the description service.
+│
+├── get_description/           # Service for retrieving a user's description.
+│   └── README.md              # Documentation for the get description service.
+│
+├── README.md                  # This file.
 ```
 
-### Explanation of each folder and file:
+### Folder Descriptions 📂
+- **.github/workflows/**: Contains CI/CD workflows using GitHub Actions for automated builds, tests, and deployments.
+- **change_password/**: Contains the logic for the "Change Password" functionality.
+- **change_user/**: Contains the logic for the "Change Username" functionality.
+- **delete_account/**: Contains the logic for the "Delete Account" functionality.
+- **description/**: Contains the logic for updating a user's description.
+- **get_description/**: Contains the logic for retrieving a user's description.
 
-- **`.github/`**: This folder contains the GitHub workflows for automating tasks like deployment. The `deploy-ruby-email.yml` file defines the CI/CD pipeline for this service.
-- **`change_password/`**: Contains logic for updating user passwords. The `change_password.rb` file handles the password update process.
-- **`change_user/`**: Contains the logic for changing the user's email address. The `change_user.rb` file is responsible for handling this operation.
-- **`delete_account/`**: This folder contains the logic for deleting user accounts. The `delete_account.rb` file manages the deletion process.
-- **`description/`**: This folder provides a general description of the service. The `description.rb` file contains the basic description text for the service.
-- **`get_description/`**: This folder holds the logic for fetching and displaying the service description. The `get_description.rb` file is responsible for retrieving this information.
-- **`README.md`**: This file provides an overview of the project, its functionality, setup, and requirements.
+## How to Deploy ⚙️
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/Loony213/email-service.git
+   ```
 
+2. **Install Dependencies:**
+   Navigate to the project directory and install the necessary dependencies (if any). Each microservice may have its own dependencies, so make sure to install them accordingly.
 
----
+3. **Run the Services:**
+   - After setting up the environment and installing dependencies, you can run individual services based on the task you want to perform, such as changing a password or updating a description.
 
-## 🛠️ Requirements
+4. **Docker Deployment:**
+   - Build the Docker image for the service you wish to deploy:
+     ```bash
+     docker build -t kamartinez/email-service .
+     ```
+   - Run the container:
+     ```bash
+     docker run -p 5000:5000 kamartinez/email-service
+     ```
 
-- Docker
-- Internet access to install dependencies
-- Ruby 3.2 and Bundler (inside container)
-- Connection to a SQL Server (TinyTDS-compatible)
+5. **Access the Service:**
+   - The services will be available on `http://localhost:5000` once the containers are running.
 
----
+## Features ✨
+- **Change Password**: Provides an endpoint to change the user's email account password.
+- **Change Username**: Allows users to change their username associated with the email account.
+- **Delete Account**: Enables users to delete their email account.
+- **Update Description**: Provides the functionality to update a user's description.
+- **Get Description**: Allows users to retrieve their current description.
 
-## 👤 Author
-
-Developed by **Loony213**  
-Image on Docker Hub: `kamartinez/ruby-email-service`  
-Part of the **Distribuida** system
+## License 📜
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

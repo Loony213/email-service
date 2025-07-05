@@ -1,156 +1,98 @@
 
-# 📂 Delete Account Service
+# Delete Account Microservice 🗑️
 
-This folder contains the logic for the **Delete Account** functionality of the Email Service microservice. The service is built using **Ruby 3.2** with the **Sinatra** framework, and it provides an API endpoint to delete a user's account.
+This microservice is part of the **Email Service** domain and is responsible for handling requests to delete a user's account. It securely removes user data from the system, ensuring that all information related to the user is deleted properly.
 
----
+## Repository Link 📁
+- [GitHub Repository](https://github.com/Loony213/email-service)
 
-## 📌 Features
+## Docker Image 🐳
+- **Docker Image:** `kamartinez/delete-account`
 
-- 🗑️ **Delete User Account**: Allows users to delete their account permanently.
-- 📡 **API Endpoint**: Exposes a RESTful endpoint (`PUT /delete-account`) to delete the user's account.
-- 🔑 **Database Interaction**: Interacts with a SQL Server database to store and retrieve user information.
-- 🛠️ **Controller and Model Design**: The logic is divided into a controller (`delete_account.rb`) and a model (`user.rb`) for easy maintenance and separation of concerns.
-- 📦 **Dockerized**: The service is containerized using Docker for easy deployment and scalability.
-- 🛡️ **Security**: Ensures that only authenticated users can delete their accounts.
+## Purpose 🎯
+The **Delete Account** microservice allows users to delete their email account and remove all associated data from the system. The service ensures that the deletion process is secure, and it interacts with the database to ensure that no traces of the user's information remain in the system.
 
----
+## Architecture Style 🏗️
+- **Microservice Architecture:** This service is designed as a standalone microservice, focusing solely on the functionality of deleting user accounts.
+- **Design Pattern:** The system follows the **MVC (Model-View-Controller)** design pattern, with a clear separation of concerns between the controller, service, and model layers.
 
-## 🧩 Architecture
+## Technologies 💻
+- **Programming Language:** Ruby
+- **Containerization:** Docker (optional)
+- **Database Interaction:** SQL Server (via TinyTds)
+- **API Integration:** REST APIs for the account deletion process
 
-The **Delete Account** service follows a modular and scalable architecture using **Sinatra** for routing and handling HTTP requests. It interacts with a SQL Server database to manage user data and permanently delete user accounts. Here's an overview of the architecture:
-
-1. **Controller Layer**:
-   - **`controllers/delete_account.rb`**: This is where the main business logic for deleting the user account resides. It handles incoming requests, verifies user input, and communicates with the model to delete the account.
-
-2. **Model Layer**:
-   - **`models/user.rb`**: The user model interacts with the database to fetch user data and delete the user.
-
-3. **Database Layer**:
-   - **`db/db.rb`**: This file contains the logic for connecting to the SQL Server database. It uses the **TinyTDS** gem to interact with the database.
-
-4. **Application Layer**:
-   - **`services/app.rb`**: This file initializes the Sinatra application, sets up routes, and serves the application. It is the entry point for the service.
-
-5. **Configuration**:
-   - **`config.ru`**: The Rack configuration file that loads and runs the Sinatra application.
-
-6. **Deployment**:
-   - The service is containerized using Docker, allowing it to be easily deployed and scaled.
-
----
-
-## 📁 Folder Structure
+## Project Structure 🧑‍💻
+The repository is structured as follows:
 
 ```
 delete_account/
-├── config.ru             # Rack configuration file
-├── controllers/
-│   └── delete_account.rb # Controller logic for deleting user account
-├── db/
-│   └── db.rb             # Database connection logic (using TinyTDS)
-├── models/
-│   └── user.rb           # User model handling user data and account deletion
-└── services/
-    └── app.rb            # Main application file that configures the service
+├── config/                   # Configuration files for setting up the environment.
+│   └── config.ru             # Main configuration file for application setup.
+│
+├── controllers/              # Handles incoming requests and responses.
+│   └── delete_user.rb        # Controller to handle account deletion requests.
+│
+├── db/                       # Database-related logic for storing and retrieving user data.
+│   └── db.rb                 # Contains the database connection and operations.
+│
+├── models/                   # Defines models for user data and database interactions.
+│   └── user.rb               # User model that manages user data.
+│
+├── services/                 # Core logic and business logic for handling user operations.
+│   └── user_service.rb       # Contains the service for deleting the user's account.
+│
+├── app.rb                    # Main entry point to run the application.
+├── Dockerfile                # Docker configuration for the containerized service.
+├── Gemfile                   # Defines the dependencies for the Ruby application.
+└── README.md                 # This file.
 ```
 
-### 📝 Description of Each File
+### Folder Descriptions 📂
+- **config/**: Contains configuration settings and environment setup for the service.
+- **controllers/**: Responsible for processing HTTP requests related to account deletion.
+- **db/**: Contains logic for interacting with the database, including user data storage and retrieval.
+- **models/**: Defines the structure of user data and the necessary operations to interact with it.
+- **services/**: Contains the core business logic for processing user account deletions.
+- **app.rb**: The main entry point to start the application and manage routes.
+- **Dockerfile**: Provides a configuration to build and run the microservice in a Docker container.
+- **Gemfile**: Specifies the Ruby dependencies necessary for the application.
 
-- **`config.ru`**: This file contains the Rack configuration for setting up the Sinatra application.
-- **`controllers/delete_account.rb`**: This is the controller responsible for the business logic of the account deletion functionality. It listens for requests, processes them, and calls the appropriate services or models.
-- **`db/db.rb`**: This file manages the connection to the SQL Server database using the `TinyTDS` library.
-- **`models/user.rb`**: This model represents the user in the system. It handles the logic of fetching user data from the database and deleting the account.
-- **`services/app.rb`**: This is the main application file where the service is initialized, routes are configured, and the server is started.
-
-## ⚙️ How It Works
-
-1. **Database Connection**: 
-   - The `db.rb` file manages the connection to the SQL Server database using the `TinyTDS` library.
-   - This connection is used by the models to interact with the database.
-
-2. **Delete Account Logic**: 
-   - When a `PUT` request is sent to the `/delete-account` endpoint, the `delete_account.rb` controller processes the request. 
-   - It retrieves the user details from the `user.rb` model and deletes the user account from the database.
-
-3. **User Model**:
-   - The `user.rb` model is used to fetch the user by ID and permanently delete the account.
-
-4. **Application Configuration**: 
-   - The `app.rb` file sets up the Sinatra application, configures routes, and starts the service.
-
-## 🚀 How to Deploy
-
-### Prerequisites
-
-- **Docker**: Ensure Docker is installed on your machine.
-- **Ruby 3.2**: Ensure you have Ruby 3.2 installed (or Docker will handle it inside the container).
-- **Database**: Make sure you have access to a SQL Server that supports `TinyTDS`.
-
-### Steps to Deploy
-
-1. **Clone the repository**:
-```bash
-git clone https://github.com/loony213/email-service.git
-cd email-service/delete_account
-```
-
-2. **Install dependencies** (inside the project folder):
-```bash
-bundle install
-```
-
-3. **Build the Docker image**:
-```bash
-docker build -t kamartinez/delete-account .
-```
-
-4. **Run the container**:
-```bash
-docker run -d -p 4567:4567 kamartinez/delete-account
-```
-
-   The service will be accessible at:  
-   📍 `http://localhost:4567`
-
-5. **Test the service**:
-   - Use a tool like **Postman** or **curl** to send a `PUT` request to:
+## How to Deploy ⚙️
+1. **Clone the Repository:**
    ```bash
-   PUT http://localhost:4567/delete-account
+   git clone https://github.com/Loony213/email-service.git
    ```
-   - Include the user ID in the request body.
 
-### Example Request:
-```json
-{
-  "user_id": 1
-}
-```
+2. **Install Dependencies:**
+   Navigate to the project directory and install the necessary Ruby gems:
+   ```bash
+   bundle install
+   ```
 
-### Example Response:
-```json
-{
-  "status": "success",
-  "message": "Account deleted successfully"
-}
-```
+3. **Run the Service:**
+   - After installing the dependencies, you can start the application:
+     ```bash
+     ruby app.rb
+     ```
 
-## 🔗 Endpoints
+4. **Docker Deployment:**
+   - Build the Docker image:
+     ```bash
+     docker build -t kamartinez/delete-account .
+     ```
+   - Run the container:
+     ```bash
+     docker run -p 5000:5000 kamartinez/delete-account
+     ```
 
-- **`PUT /delete-account`**: Delete user account. Requires user ID.
-- **`GET /`**: Root test route: `"Ruby service running successfully"`
+5. **Access the Service:**
+   - The service will be accessible on `http://localhost:5000` once the container is running.
 
-## 🛠️ Requirements
+## Features ✨
+- **Account Deletion**: Allows users to securely delete their email account and all associated data.
+- **Modular Architecture**: The microservice is modular and easily extendable to include additional user-related functionalities.
+- **Database Integration**: Interacts with the database to permanently delete user information.
 
-- Docker
-- Internet access to install dependencies
-- Ruby 3.2 and Bundler (inside container)
-- Connection to a SQL Server (TinyTDS-compatible)
-
----
-
-## 👤 Author
-
-Developed by **Loony213**  
-Image on Docker Hub: `kamartinez/delete-account
-Part of the **Distribuida** system
+## License 📜
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
